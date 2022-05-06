@@ -39,7 +39,6 @@ const reactionSchema = new Schema(
       type: Date,
       default: Date.now(),
     },
-    reactions: [reactionSchema],
   },
   {
     toJSON: {
