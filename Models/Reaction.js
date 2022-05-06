@@ -1,33 +1,41 @@
-const { Schema, model } = require("mongoose");
-const reactionSchema = require("./Reaction");
+const { ObjectId } = require("bson");
+const { Schema } = require("mongoose");
 
-// thoughtText
+// reactionId
+
+// Use Mongoose's ObjectId data type
+// Default value is set to a new ObjectId
+// reactionBody
 
 // String
 // Required
-// Must be between 1 and 280 characters
+// 280 character maximum
+// username
+
+// String
+// Required
 // createdAt
 
 // Date
 // Set default value to the current timestamp
 // Use a getter method to format the timestamp on query
-// username (The user that created this thought)
 
-// String
-// Required
-// reactions (These are like replies)
-
-// Array of nested documents created with the reactionSchema
-
-// Schema to create a course model
-const thoughtSchema = new Schema(
+const reactionSchema = new Schema(
   {
-    thoughtText: {
+    reactionId: {
+      type: ObjectId,
+      default: new ObjectId(),
+    },
+    reactionBody: {
       type: String,
       required: true,
-      max_length: 280,
+      maxlength: 280,
     },
-    date: {
+    username: {
+      type: String,
+      required: true,
+    },
+    createdAt: {
       type: Date,
       default: Date.now(),
     },
@@ -41,7 +49,7 @@ const thoughtSchema = new Schema(
   }
 );
 
-thoughtSchema
+reactionSchema
   .virtual("formatTime")
   // Getter
   .get(function () {
@@ -54,6 +62,4 @@ thoughtSchema
     );
   });
 
-const Thought = model("thought", thoughtSchema);
-
-module.exports = Thought;
+module.exports = reactionSchema;
