@@ -1,6 +1,6 @@
 const { ObjectId } = require("bson");
-const { Schema } = require("mongoose");
-
+const { Schema, Types } = require("mongoose");
+const moment = require("moment");
 // reactionId
 
 // Use Mongoose's ObjectId data type
@@ -24,7 +24,7 @@ const reactionSchema = new Schema(
   {
     reactionId: {
       type: ObjectId,
-      default: new ObjectId(),
+      default: Types.ObjectId(),
     },
     reactionBody: {
       type: String,
@@ -38,27 +38,23 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now(),
+      get: (createdAt) => moment(createdAt).format("MMM DD, YYYY [at] hh:mm a"),
     },
   },
   {
     toJSON: {
       virtuals: true,
+      getters: true,
     },
     id: false,
   }
 );
 
-reactionSchema
-  .virtual("formatTime")
-  // Getter
-  .get(function () {
-    return (
-      this.date.getHours() +
-      ":" +
-      this.date.getMinutes() +
-      ", " +
-      this.date.toDateString()
-    );
-  });
+// reactionSchema
+//   .virtual("formatTime")
+//   // Getter
+//   .get(function () {
+//     return moment(createdAt)
+//   });
 
 module.exports = reactionSchema;
